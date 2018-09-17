@@ -6,7 +6,7 @@
 #    By: adoat <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/09 15:42:19 by adoat             #+#    #+#              #
-#    Updated: 2018/09/09 17:00:15 by adoat            ###   ########.fr        #
+#    Updated: 2018/09/17 16:32:40 by adoat            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ all : $(NAME)
 
 $(NAME) : $(OBJ)
 	make -C ./libft
-	gcc -L./libft -lft -o $(NAME) $(SRC)
+	gcc -L./libft -lft -o $(NAME) $(OBJ)
 
 $(OBJ): %.o:%.c
 	gcc -o $@ -c $< -Wall -Wextra -Werror

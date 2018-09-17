@@ -6,7 +6,7 @@
 /*   By: mpizzaga <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/17 15:05:09 by mpizzaga          #+#    #+#             */
-/*   Updated: 2018/09/09 18:52:54 by adoat            ###   ########.fr       */
+/*   Updated: 2018/09/17 15:23:23 by adoat            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct		s_jeu_fillit
 }					t_jeu_fillit;
 
 int					check_file(int fd, t_jeu_fillit *fillit);
-void				add_piece(t_jeu_fillit *fillit, int code);
+int					add_piece(t_jeu_fillit *fillit, int code);
 int					init_map(t_jeu_fillit *fillit);
 int					can_fill_map(t_jeu_fillit *fillit, t_piece *piece);
 int					set_map(t_jeu_fillit *fillit);
