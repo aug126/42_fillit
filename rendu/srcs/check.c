@@ -6,18 +6,14 @@
 /*   By: mpizzaga <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/17 15:04:12 by mpizzaga          #+#    #+#             */
-/*   Updated: 2018/09/09 17:46:40 by adoat            ###   ########.fr       */
+/*   Updated: 2018/09/17 17:02:43 by adoat            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-static int	*init_array_piece(void)
+static int	*init_array_piece(int *array_pieces)
 {
-	int		*array_pieces;
-
-	if (!(array_pieces = (int*)malloc(sizeof(int) * 20)))
-		return (NULL);
 	array_pieces[19] = '\0';
 	array_pieces[0] = 655666;
 	array_pieces[1] = 565758;
@@ -41,22 +37,14 @@ static int	*init_array_piece(void)
 	return (array_pieces);
 }
 
-static int	verif_type(int code)
+static int	verif_type(int code, int *array_pieces)
 {
-	int		*array_pieces;
 	int		i_array;
 
-	array_pieces = init_array_piece();
 	i_array = 0;
 	while (array_pieces[i_array] != '\0')
-	{
 		if (array_pieces[i_array++] == code)
-		{
-			free(array_pieces);
 			return (0);
-		}
-	}
-	free(array_pieces);
 	return (1);
 }
 
@@ -93,7 +81,9 @@ static int	get_shape(char *buf, t_jeu_fillit *fillit)
 	int		i;
 	int		i_first;
 	int		code;
+	int		array_pieces[20];
 
+	init_array_piece(array_pieces);
 	code = 0;
 	i = 0;
 	while (buf[i++] != '#')
@@ -109,9 +99,10 @@ static int	get_shape(char *buf, t_jeu_fillit *fillit)
 		}
 		i++;
 	}
-	if (verif_type(code) == 0)
+	if (verif_type(code, array_pieces) == 0)
 	{
-		add_piece(fillit, code);
+		if (add_piece(fillit, code))
+			return (1);
 		return (0);
 	}
 	return (1);
@@ -125,7 +116,7 @@ int			check_file(int fd, t_jeu_fillit *fillit)
 	int		last;
 
 	count_pieces = 0;
-	while ((limit = read(fd, buf, 21)) != 0)
+	while ((limit = read(fd, buf, 21)) > 0)
 	{
 		last = limit;
 		if (check_piece(buf, limit) == 1)

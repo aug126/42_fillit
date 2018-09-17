@@ -6,13 +6,13 @@
 /*   By: mpizzaga <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/17 15:04:23 by mpizzaga          #+#    #+#             */
-/*   Updated: 2018/09/09 19:01:58 by adoat            ###   ########.fr       */
+/*   Updated: 2018/09/17 16:40:20 by adoat            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-void		add_piece(t_jeu_fillit *fillit, int code)
+int			add_piece(t_jeu_fillit *fillit, int code)
 {
 	t_piece	*piece;
 	t_piece *actuel;
@@ -20,8 +20,11 @@ void		add_piece(t_jeu_fillit *fillit, int code)
 
 	piece = (t_piece*)malloc(sizeof(*piece));
 	actuel = (t_piece*)malloc(sizeof(*actuel));
+	if (piece == NULL || actuel == NULL)
+		return (1);
 	piece->next = NULL;
-	piece->type = ft_itoa(code);
+	if ((piece->type = ft_itoa(code)) == NULL)
+		return (1);
 	ordre = 'A';
 	if (fillit->first == NULL)
 	{
@@ -36,6 +39,7 @@ void		add_piece(t_jeu_fillit *fillit, int code)
 		piece->lettre = ordre + 1;
 		actuel->next = piece;
 	}
+	return (0);
 }
 
 int			set_map(t_jeu_fillit *fillit)
@@ -44,6 +48,7 @@ int			set_map(t_jeu_fillit *fillit)
 	int		j;
 
 	i = fillit->map_size * fillit->map_size + fillit->map_size;
+	free(fillit->map);
 	if (!(fillit->map = (char *)malloc(sizeof(char) * (i + 1))))
 		return (1);
 	j = 1;
@@ -74,15 +79,15 @@ int			init_map(t_jeu_fillit *fillit)
 static void	free_struct(t_piece *piece)
 {
 	if (piece->next != NULL)
-	{
 		free_struct(piece->next);
-	}
+	free(piece->type);
 	free(piece);
 }
 
 void		free_fillit(t_jeu_fillit *fillit)
 {
-	free_struct(fillit->first);
+	if (fillit->first != NULL)
+		free_struct(fillit->first);
 	free(fillit->map);
 	free(fillit);
 }
