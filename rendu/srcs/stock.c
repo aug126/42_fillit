@@ -6,7 +6,7 @@
 /*   By: mpizzaga <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/17 15:04:23 by mpizzaga          #+#    #+#             */
-/*   Updated: 2018/09/17 16:40:20 by adoat            ###   ########.fr       */
+/*   Updated: 2018/10/01 15:09:30 by mpizzaga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,8 @@ int			add_piece(t_jeu_fillit *fillit, int code)
 	if ((piece->type = ft_itoa(code)) == NULL)
 		return (1);
 	ordre = 'A';
-	if (fillit->first == NULL)
-	{
-		piece->lettre = ordre;
-		fillit->first = piece;
-	}
+	if ((fillit->first == NULL) && (piece->lettre = ordre))
+		(fillit->first = piece);
 	else
 	{
 		actuel = fillit->first;
@@ -72,7 +69,8 @@ int			init_map(t_jeu_fillit *fillit)
 	fillit->map_size = 1;
 	while (fillit->map_size * fillit->map_size < i)
 		fillit->map_size += 1;
-	set_map(fillit);
+	if (set_map(fillit))
+		return (1);
 	return (0);
 }
 

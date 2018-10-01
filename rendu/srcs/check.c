@@ -6,7 +6,7 @@
 /*   By: mpizzaga <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/17 15:04:12 by mpizzaga          #+#    #+#             */
-/*   Updated: 2018/09/17 17:02:43 by adoat            ###   ########.fr       */
+/*   Updated: 2018/10/01 15:33:38 by mpizzaga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,9 @@ static int	get_shape(char *buf, t_jeu_fillit *fillit)
 	i_first = i - 1;
 	while (i < 20)
 	{
-		if (buf[i] == '#')
-		{
-			code *= 100;
-			code += ((i % 5) - (i_first % 5) + 5) * 10 +
-				(i / 5) - (i_first / 5) + 5;
-		}
+		if (buf[i] == '#' && ((code *= 100) || 1))
+			code += ((i % 5) - (i_first % 5) + 5) * 10 + (i / 5)
+			- (i_first / 5) + 5;
 		i++;
 	}
 	if (verif_type(code, array_pieces) == 0)
@@ -119,9 +116,9 @@ int			check_file(int fd, t_jeu_fillit *fillit)
 	while ((limit = read(fd, buf, 21)) > 0)
 	{
 		last = limit;
-		if (check_piece(buf, limit) == 1)
+		if (check_piece(buf, limit))
 			return (1);
-		if (get_shape(buf, fillit) == 1)
+		if (get_shape(buf, fillit))
 			return (1);
 		count_pieces++;
 	}
